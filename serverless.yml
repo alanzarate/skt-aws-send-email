@@ -1,0 +1,34 @@
+ 
+
+service: email-processor-v1-python
+ 
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: python3.9
+  region: us-west-2
+  iamRoleStatements:
+    - Effect: "Allow"
+      Action: 
+        - "sqs:SendMessage"
+        - "sqs:GetQueueUrl"
+      Resource: "arn:aws:sqs:us-west-2:463809809787:MyQueue"
+    
+ 
+functions:
+  receiver:
+    handler: gmailService.lambda_handler
+    events:
+      - sqs: 
+          arn:
+            Fn::GetAtt:
+              - MyQueue
+              - Arn
+
+resources:
+  Resources:
+    MyQueue:
+      Type: AWS::SQS::Queue
+      Properties:
+        QueueName: "MyQueue"
