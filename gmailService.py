@@ -10,7 +10,7 @@ def lambda_handler(event, context):
     for record in records:
       body = record['body'] 
       dat = json.loads(body)
-      send_email(dat['message'], dat['receiver'], dat['subject'])
+      send_email(dat['message'], dat['emailReceiver'], dat['subject'])
     
 
 # =============================================================================
