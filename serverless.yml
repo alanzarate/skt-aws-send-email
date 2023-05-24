@@ -13,22 +13,25 @@ provider:
       Action: 
         - "sqs:SendMessage"
         - "sqs:GetQueueUrl"
-      Resource: "arn:aws:sqs:us-west-2:463809809787:MyQueue"
+      Resource: 
+        - Fn::GetAtt:
+            - MyQueue2
+            - Arn
     
  
 functions:
-  receiver:
+  receiver2:
     handler: gmailService.lambda_handler
     events:
       - sqs: 
           arn:
             Fn::GetAtt:
-              - MyQueue
+              - MyQueue2
               - Arn
 
 resources:
   Resources:
-    MyQueue:
+    MyQueue2:
       Type: AWS::SQS::Queue
       Properties:
-        QueueName: "MyQueue"
+        QueueName: "MyQueue2"
